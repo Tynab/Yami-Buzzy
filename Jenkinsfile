@@ -1,10 +1,28 @@
+// Send a Telegram message.
+// The text goes through the environment (never through Groovy/shell string interpolation),
+// and the bot token is passed to curl on stdin so it never shows up in argv.
+def tg(String text) {
+    withEnv(["TG_TEXT=${text}"]) {
+        sh '''
+            set +x
+            config=$(printf 'url = "https://api.telegram.org/bot%s/sendMessage"' "$TOKEN")
+            echo "$config" | curl -fsS -o /dev/null -K - --data-urlencode "chat_id=$CHAT_ID" --data-urlencode "text=$TG_TEXT" || echo 'telegram notify failed (ignored)'
+        '''
+    }
+}
+
 pipeline {
     agent any
-    
+
     environment {
         // Telegram configre
         TOKEN = credentials('telegram_token')
         CHAT_ID = credentials('telegram_chatid')
+
+        // Docker
+        IMAGE = 'yamiannephilim/wedding'
+        CONTAINER = 'wedding'
+        NETWORK = 'yan'
 
         // Telegram message
         GIT_MESSAGE = sh(returnStdout: true, script: "git log -n 1 --format=%s ${GIT_COMMIT}").trim()
@@ -14,6 +32,7 @@ pipeline {
         TEXT_BREAK = '----------------------------------------'
         TEXT_PRE = "${TEXT_BREAK}\n${GIT_INFO}"
         TEXT_BUILD = "${JOB_NAME} is Building"
+        TEXT_TEST = "${JOB_NAME} is Testing"
         TEXT_PUSH = "${JOB_NAME} is Pushing"
         TEXT_CLEAN = "${JOB_NAME} is Cleaning"
         TEXT_RUN = "${JOB_NAME} is Running"
@@ -26,43 +45,95 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PRE}' --form chat_id='${CHAT_ID}'"
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_BUILD}' --form chat_id='${CHAT_ID}'"
-                sh 'docker build -t yamiannephilim/wedding:latest .'
+                script {
+                    tg(env.TEXT_PRE)
+                    tg(env.TEXT_BUILD)
+                }
+
+                // Binary files checked out as Git LFS pointers would be served as broken assets
+                sh '''
+                    if grep -rlI '^version https://git-lfs.github.com/spec/v1' index.html wp-content; then
+                        echo 'Git LFS pointer files found in the site: run "git lfs pull" on the agent'
+                        exit 1
+                    fi
+                '''
+
+                sh 'docker build --pull -t "$IMAGE:$GIT_COMMIT_SHORT" -t "$IMAGE:latest" .'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    tg(env.TEXT_TEST)
+                }
+
+                // Smoke test the new image before it is pushed or deployed
+                sh '''
+                    name="$CONTAINER-smoke-$BUILD_NUMBER"
+                    docker rm -f "$name" >/dev/null 2>&1 || true
+                    docker run -d --name "$name" "$IMAGE:$GIT_COMMIT_SHORT" >/dev/null
+                    trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+
+                    ok=0
+                    for i in $(seq 1 20); do
+                        if docker exec "$name" wget -qO- http://127.0.0.1/ 2>/dev/null | grep -q 'Thu Buzzy'; then
+                            ok=1
+                            break
+                        fi
+                        sleep 1
+                    done
+                    [ "$ok" = 1 ] || { echo 'smoke test: index.html is not served'; exit 1; }
+
+                    docker exec "$name" wget -qO- http://127.0.0.1/wp-content/themes/js/main-wedding8a54.js >/dev/null
+
+                    if docker exec "$name" wget -qO- http://127.0.0.1/.git/HEAD >/dev/null 2>&1; then
+                        echo 'smoke test: /.git is exposed'
+                        exit 1
+                    fi
+                '''
             }
         }
 
         stage('Push') {
             steps {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_PUSH}' --form chat_id='${CHAT_ID}'"
+                script {
+                    tg(env.TEXT_PUSH)
+                }
 
                 withDockerRegistry(credentialsId: 'docker_hub', url: 'https://index.docker.io/v1/') {
-                    sh 'docker push yamiannephilim/wedding'
+                    sh 'docker push "$IMAGE:$GIT_COMMIT_SHORT"'
+                    sh 'docker push "$IMAGE:latest"'
                 }
             }
         }
 
         stage('Clean') {
             steps {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_CLEAN}' --form chat_id='${CHAT_ID}'"
-
                 script {
-                    def containerId = sh(returnStdout: true, script: 'docker ps -aqf "name=wedding"').trim()
-                    if (containerId) {
-                        sh "docker stop $containerId"
-                        sh "docker rm $containerId"
-                    }
+                    tg(env.TEXT_CLEAN)
                 }
+
+                // Only ever touch this job's own container (exact name)
+                sh 'docker rm -f "$CONTAINER" >/dev/null 2>&1 || echo "this container does not exist"'
             }
         }
 
         stage('Run') {
             steps {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_RUN}' --form chat_id='${CHAT_ID}'"
-                sh 'docker container stop wedding || echo "this container does not exist"'
-                sh 'docker network create yan || echo "this network exist"'
-                sh 'echo y | docker container prune'
-                sh 'docker run --name wedding --network yan --restart=unless-stopped -d yamiannephilim/wedding:latest'
+                script {
+                    tg(env.TEXT_RUN)
+                }
+
+                sh 'docker network inspect "$NETWORK" >/dev/null 2>&1 || docker network create "$NETWORK"'
+                sh 'docker run --name "$CONTAINER" --network "$NETWORK" --restart=unless-stopped -d "$IMAGE:$GIT_COMMIT_SHORT"'
+                sh '''
+                    sleep 2
+                    [ "$(docker inspect -f '{{.State.Running}}' "$CONTAINER")" = true ]
+                '''
+
+                // Only dangling images built by this job
+                sh 'docker image prune -f --filter label=app=wedding'
             }
         }
     }
@@ -74,13 +145,13 @@ pipeline {
 
         success {
             script {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_SUCCESS_BUILD}' --form chat_id='${CHAT_ID}'"
+                tg(env.TEXT_SUCCESS_BUILD)
             }
         }
 
         failure {
             script {
-                sh "curl --location --request POST 'https://api.telegram.org/bot${TOKEN}/sendMessage' --form text='${TEXT_FAILURE_BUILD}' --form chat_id='${CHAT_ID}'"
+                tg(env.TEXT_FAILURE_BUILD)
             }
         }
     }

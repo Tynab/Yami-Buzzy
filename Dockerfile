@@ -1,11 +1,13 @@
-FROM nginx:latest
+FROM nginx:stable-alpine
 
-WORKDIR /usr/share/nginx/html
+LABEL app=wedding
 
-RUN rm -rf ./*
+RUN rm -rf /usr/share/nginx/html/*
 
-COPY . /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY index.html /usr/share/nginx/html/
+COPY wp-content/ /usr/share/nginx/html/wp-content/
+COPY wp-includes/ /usr/share/nginx/html/wp-includes/
 
 EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
