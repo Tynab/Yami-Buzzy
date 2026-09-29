@@ -73,7 +73,6 @@ pipeline {
                     name="$CONTAINER-smoke-$BUILD_NUMBER"
                     docker rm -f "$name" >/dev/null 2>&1 || true
                     docker run -d --name "$name" "$IMAGE:$GIT_COMMIT_SHORT" >/dev/null
-                    trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
 
                     ok=0
                     for i in $(seq 1 20); do
@@ -92,6 +91,13 @@ pipeline {
                         exit 1
                     fi
                 '''
+            }
+
+            post {
+                // also runs when the build is aborted, unlike a shell trap
+                always {
+                    sh 'docker rm -f "$CONTAINER-smoke-$BUILD_NUMBER" >/dev/null 2>&1 || true'
+                }
             }
         }
 
@@ -132,8 +138,9 @@ pipeline {
                     [ "$(docker inspect -f '{{.State.Running}}' "$CONTAINER")" = true ]
                 '''
 
-                // Only dangling images built by this job
-                sh 'docker image prune -f --filter label=app=wedding'
+                // This job's images that no container uses and that are older than 30 days
+                // (every tag stays on Docker Hub for rollbacks)
+                sh 'docker image prune -af --filter label=app=wedding --filter until=720h'
             }
         }
     }
