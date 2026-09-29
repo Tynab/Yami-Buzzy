@@ -24,6 +24,21 @@
 
     <link rel="preconnect" href="https://s3.ap-southeast-1.amazonaws.com">
 
+    <script>
+        // must be registered before lazysizes, which can unveil elements while the page is still parsing
+        document.addEventListener('lazybeforeunveil', function (e) {
+            const element = e.target;
+
+            if (element.dataset.bg) {
+                element.style.backgroundImage = `url(${element.dataset.bg})`;
+            }
+
+            if (element.tagName === 'VIDEO' && element.dataset.poster) {
+                element.poster = element.dataset.poster;
+            }
+        });
+    </script>
+
     <script src="wp-content/vendor/lazysizes-5.3.2/lazysizes.min.js" async></script>
 
     <style>
@@ -1180,18 +1195,6 @@
             userMuted = true;
             closeWelcome();
         }
-
-        document.addEventListener('lazybeforeunveil', function (e) {
-            const element = e.target;
-
-            if (element.dataset.bg) {
-                element.style.backgroundImage = `url(${element.dataset.bg})`;
-            }
-
-            if (element.tagName === 'VIDEO' && element.dataset.poster) {
-                element.poster = element.dataset.poster;
-            }
-        });
 
         const resources = [
             "https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9115.webp",

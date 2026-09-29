@@ -661,6 +661,13 @@ main {
     padding: 0;
 }
 
+/* keep the card's text clear of the floating music button */
+@media (max-width: 399px) {
+    #banner {
+        padding-top: 72px;
+    }
+}
+
 .overlay {
     background-color: rgba(253, 209, 114, 0.234);
     position: absolute;
@@ -1065,8 +1072,8 @@ main {
 }
 
 .invitation-card img {
-    max-width: 100%;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
     aspect-ratio: 1/1;
     object-fit: cover;
     padding: 8px;
