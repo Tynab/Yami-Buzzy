@@ -33,6 +33,13 @@
 
     cursor: pointer;
 
+    z-index: 9999;
+
+}
+
+/* keep the button above the header but below the welcome modal and Fancybox */
+html.with-fancybox .toggleAudio {
+    display: none;
 }
 
 .toggleAudio i {
