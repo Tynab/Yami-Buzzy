@@ -39,7 +39,7 @@ wp-content/
 nginx.conf                  gzip, cache headers, no dotfiles
 Dockerfile, .dockerignore   image with only the site files
 Jenkinsfile                 build, smoke test, push, deploy, Telegram notifications
-tools/                      qr_code.py (QR for the printed cards), cwebp-jpg.bat (JPG -> WebP)
+tools/                      qr_code.py (QR for the printed cards), cwebp-jpg.bat (bulk JPG -> full-size WebP)
 ```
 
 ## Technologies
@@ -81,12 +81,15 @@ Every step is reported to Telegram.
 
 ### Roll back
 
-Every deploy is tagged with its short commit hash, so going back is one command on the server:
+Deploys are tagged with their short commit hash (from the first build of this pipeline on). Make sure the tag exists before removing the running container:
 
 ```bash
+docker image inspect yamiannephilim/wedding:<previous-commit> >/dev/null || docker pull yamiannephilim/wedding:<previous-commit>
 docker rm -f wedding
 docker run -d --name wedding --network yan --restart=unless-stopped yamiannephilim/wedding:<previous-commit>
 ```
+
+Builds from the old pipeline only ever had `:latest`, so they have no commit tag. To go back to one of those, revert the commits and push; the pipeline rebuilds that version and tags it.
 
 The printed QR code (`tools/qr_code.py`) points to `https://www.yamiannephilim.com/wedding-card`. That route has to keep reaching this container.
 
@@ -96,9 +99,11 @@ The printed QR code (`tools/qr_code.py`) points to `https://www.yamiannephilim.c
 
 Naming: `image/NNNN.webp` is the full photo opened in the lightbox, `image/NNNN_1.webp` its thumbnail, `video/*.mp4`, `audio/ido.mp3`.
 
+> **Before any upload**, check how the bucket makes files public: `aws s3api get-bucket-ownership-controls --bucket tynab.wedding`. If ACLs are disabled (`BucketOwnerEnforced`), the commands below work as written. Otherwise, check `aws s3api get-object-acl --bucket tynab.wedding --key image/9115.webp`. If it grants `READ` to `AllUsers`, add `--acl public-read` to **every** `aws s3 cp` below (new files, same-name overwrites and in-place copies). Without it, the uploaded file returns 403 to guests.
+
 ### Add a photo to an album
 
-1. Export two WebP files (e.g. with `tools/cwebp-jpg.bat` or `cwebp`):
+1. Export two WebP files with `cwebp`:
 
    ```bash
    cwebp -q 80 -resize 2048 0 NNNN.jpg -o NNNN.webp      # lightbox, 2048 px wide is plenty
@@ -126,14 +131,14 @@ Naming: `image/NNNN.webp` is the full photo opened in the lightbox, `image/NNNN_
    ```
 
    Do the same for `propose.mp4` and `card.mp4`. `flycam.mp4` (1080p, about 110 MB) can also be re-encoded to 720p (`-vf scale=-2:720 -c:v libx264 -crf 26 -c:a copy`) to cut it to roughly a quarter.
-- **Cache headers on what is already uploaded.** Objects on S3 currently have no `Cache-Control`, so browsers re-check them on every visit:
+- **Cache headers on what is already uploaded.** Objects on S3 have no `Cache-Control`, so caching is left to browser heuristics, which are short for newly uploaded or overwritten files. Set it on everything you upload (as above) and, optionally, on what is already there. A file re-uploaded under the same name can then stay stale in browsers for up to `max-age` (30 days here):
 
    ```bash
    aws s3 cp s3://tynab.wedding/image/ s3://tynab.wedding/image/ --recursive \
      --metadata-directive REPLACE --content-type image/webp --cache-control "public, max-age=2592000"
    ```
 
-   Run it again per folder with `video/` + `video/mp4` and `audio/` + `audio/mpeg`. If the objects are public through object ACLs rather than a bucket policy, add `--acl public-read`, because the copy resets the ACL.
+   Run it again per folder with `video/` + `video/mp4` and `audio/` + `audio/mpeg`.
 
 ### Keep it safe
 
@@ -147,5 +152,5 @@ Naming: `image/NNNN.webp` is the full photo opened in the lightbox, `image/NNNN_
 ## Credits
 
 - **Icons**: Remix Icon.
-- **Libraries**: UIkit, Swiper, Fancybox, AOS and lazysizes. Versions and licenses are in `wp-content/vendor/VERSIONS.md`.
+- **Libraries**: Swiper, Fancybox, lazysizes and Remix Icon are pinned copies; their versions and licenses are in `wp-content/vendor/VERSIONS.md`. UIkit and AOS (both MIT) ship with the theme in `wp-content/themes/`.
 - **Inspiration**: special thanks to the creativity of **[nguyenminhdat](https://github.com/nguyenminhdat)**.
