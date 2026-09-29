@@ -1,15 +1,22 @@
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Each library is started on its own, so one that failed to load cannot take the others down
+
 //AOS ANIMATION
-AOS.init({
-    once: true,
-    duration: 700,
-    offset: 60,
-    disable: () => reduceMotion,
-});
+if (window.AOS) {
+    AOS.init({
+        once: true,
+        duration: 700,
+        offset: 60,
+        disable: () => reduceMotion,
+    });
+} else {
+    // without AOS its CSS would keep these blocks invisible
+    document.querySelectorAll('[data-aos]').forEach((el) => el.removeAttribute('data-aos'));
+}
 
 // SWIPER
-var swiper1 = new Swiper(".album-slide", {
+const albumSliders = window.Swiper && new Swiper(".album-slide", {
     effect: "coverflow",
     grabCursor: true,
     centeredSlides: true,
@@ -29,7 +36,7 @@ var swiper1 = new Swiper(".album-slide", {
 });
 
 // only autoplay the albums that are on screen
-if (!reduceMotion && 'IntersectionObserver' in window) {
+if (albumSliders && !reduceMotion && 'IntersectionObserver' in window) {
     const albumObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             const autoplay = entry.target.swiper?.autoplay;
@@ -42,7 +49,7 @@ if (!reduceMotion && 'IntersectionObserver' in window) {
 }
 
 // FANCY BOX
-Fancybox.bind("[data-fancybox]", {
+window.Fancybox?.bind("[data-fancybox]", {
 });
 
 // AUDIO toggle lives in the inline script in index.html
