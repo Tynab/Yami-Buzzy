@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="vi" prefix="og: https://ogp.me/ns#">
+<html lang="en" prefix="og: https://ogp.me/ns#">
 
 <head>
     <meta charset="UTF-8">
@@ -37,6 +37,13 @@
         }
     </style>
 
+    <script>
+        // back in the same tab: hide the welcome gate before it paints
+        try {
+            if (sessionStorage.getItem('wedding-entered') === '1') document.documentElement.classList.add('is-entered');
+        } catch { }
+    </script>
+
     <link rel="stylesheet" href="wp-content/themes/css/uikit.min8a54.css">
     <link rel="stylesheet" href="wp-content/themes/css/reset18a54.css">
     <link rel="stylesheet" href="wp-content/vendor/remixicon-4.0.0/remixicon.css">
@@ -58,20 +65,22 @@
 
 <body
     class="mau-thiep-template mau-thiep-template-templates mau-thiep-template-korea mau-thiep-template-templateskorea-php single single-mau-thiep postid-154 no-sidebar">
-    <div id="welcome-modal"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 10000;">
-        <div
-            style="background: white; padding: 30px 40px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); text-align: center;">
-            <h2 style="font-size: 28px; margin-bottom: 20px; font-family: 'Times New Roman', serif; color: #d6336c;">
+    <div id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+        <div class="welcome-dialog">
+            <h2 id="welcome-title">
                 Welcome to Our Wedding!
             </h2>
-            <p style="font-size: 16px; margin-bottom: 30px; font-family: 'Georgia', serif;">
+            <p>
                 Thanks for celebrating this special day with us. Click 'Start' to begin the journey.
             </p>
-            <button id="startButton"
-                style="padding: 12px 25px; font-size: 18px; color: white; background: #d6336c; border: none; border-radius: 5px; cursor: pointer; font-family: 'Arial', sans-serif;">
-                Start
-            </button>
+            <div class="welcome-actions">
+                <button id="startButton" type="button" class="welcome-btn">
+                    Start
+                </button>
+                <button id="quietStartButton" type="button" class="welcome-btn welcome-btn-quiet">
+                    Enter without music
+                </button>
+            </div>
         </div>
     </div>
 
@@ -89,7 +98,7 @@
                         </p>
                     </div>
 
-                    <div class="banner-name">
+                    <div class="banner-name" role="heading" aria-level="1">
                         An Yami<br>
                         &<br>
                         Thu Buzzy
@@ -123,25 +132,25 @@
                                 Event venue
                             </p>
 
-                            <span class="banner_location_adress">
+                            <span class="banner_location_adress" lang="vi">
                                 KP Tân Thạnh, Xuân Đài, Sông Cầu, Phú Yên
                             </span>
                         </div>
                     </div>
 
                     <div class="social-link">
-                        <a href="tel:+84349693092" class="">
-                            <i class="ri-phone-fill">
+                        <a href="tel:+84349693092" aria-label="Call An Yami">
+                            <i class="ri-phone-fill" aria-hidden="true">
                             </i>
                         </a>
 
-                        <a href="#gift" class="">
-                            <i class="ri-gift-2-fill">
+                        <a href="#gift" aria-label="Send a gift">
+                            <i class="ri-gift-2-fill" aria-hidden="true">
                             </i>
                         </a>
 
-                        <a href="https://maps.app.goo.gl/HUFFzVFk9QpMKuK3A" target="_blank">
-                            <i class='ri-map-2-line'>
+                        <a href="https://maps.app.goo.gl/HUFFzVFk9QpMKuK3A" target="_blank" rel="noopener" aria-label="Venue on Google Maps">
+                            <i class="ri-map-2-line" aria-hidden="true">
                             </i>
                         </a>
                     </div>
@@ -167,7 +176,7 @@
             <div class="about-container">
                 <div class="about-card" style="order:1">
                     <div class="about-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9451.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9451.webp" alt="Thu Buzzy"
                             class="bride_img lazyload">
                     </div>
 
@@ -181,13 +190,13 @@
                         </p>
 
                         <div class="social-link">
-                            <a href="tel:+84969619348" class="gr_phone">
-                                <i class="ri-phone-fill">
+                            <a href="tel:+84969619348" class="gr_phone" aria-label="Call Thu Buzzy">
+                                <i class="ri-phone-fill" aria-hidden="true">
                                 </i>
                             </a>
 
-                            <a href="#gift" class="">
-                                <i class="ri-gift-2-fill">
+                            <a href="#gift" aria-label="Send a gift">
+                                <i class="ri-gift-2-fill" aria-hidden="true">
                                 </i>
                             </a>
                         </div>
@@ -196,7 +205,7 @@
 
                 <div class="about-card" style="order:2">
                     <div class="about-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9636.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9636.webp" alt="An Yami"
                             class="groom_img lazyload">
                     </div>
 
@@ -210,13 +219,13 @@
                         </p>
 
                         <div class="social-link">
-                            <a href="tel:+84349693092" class="gr_phone">
-                                <i class="ri-phone-fill">
+                            <a href="tel:+84349693092" class="gr_phone" aria-label="Call An Yami">
+                                <i class="ri-phone-fill" aria-hidden="true">
                                 </i>
                             </a>
 
-                            <a href="#gift" class="">
-                                <i class="ri-gift-2-fill">
+                            <a href="#gift" aria-label="Send a gift">
+                                <i class="ri-gift-2-fill" aria-hidden="true">
                                 </i>
                             </a>
                         </div>
@@ -300,14 +309,14 @@
             <div class="invitation">
                 <div class="invitation-container">
                     <div class="invitation-card">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9667.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9667.webp" alt="The couple at the Phú Yên ceremony"
                             class="lazyload">
 
                         <h3 class="card-title uk-margin-remove">
                             At Home
                         </h3>
 
-                        <address class="uk-margin-remove">
+                        <address class="uk-margin-remove" lang="vi">
                             <p>
                                 KDC Đài Loan, KP Tân Thạnh, Xuân Đài, Sông Cầu, Phú Yên
                             </p>
@@ -346,13 +355,13 @@
                         </div>
 
                         <div class="social-link">
-                            <a href="tel:+84969619348" class="phone_number">
-                                <i class="ri-phone-fill">
+                            <a href="tel:+84969619348" class="phone_number" aria-label="Call Thu Buzzy">
+                                <i class="ri-phone-fill" aria-hidden="true">
                                 </i>
                             </a>
 
-                            <a href="https://maps.app.goo.gl/FAiS4YMMpGH2QFa5A" class="invi_map" target="_blank">
-                                <i class='ri-map-2-line'>
+                            <a href="https://maps.app.goo.gl/FAiS4YMMpGH2QFa5A" class="invi_map" target="_blank" rel="noopener" aria-label="Phú Yên venue on Google Maps">
+                                <i class="ri-map-2-line" aria-hidden="true">
                                 </i>
                             </a>
                         </div>
@@ -363,14 +372,14 @@
             <div class="invitation">
                 <div class="invitation-container">
                     <div class="invitation-card">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8772.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8772.webp" alt="The couple at the Bến Tre ceremony"
                             class="lazyload">
 
                         <h3 class="card-title uk-margin-remove">
                             At Home
                         </h3>
 
-                        <address class="uk-margin-remove">
+                        <address class="uk-margin-remove" lang="vi">
                             <p>
                                 87 tổ 13, Đồng Nhơn, Lương Quới, Giồng Trôm, Bến Tre
                             </p>
@@ -409,13 +418,13 @@
                         </div>
 
                         <div class="social-link">
-                            <a href="tel:+84349693092" class="phone_number">
-                                <i class="ri-phone-fill">
+                            <a href="tel:+84349693092" class="phone_number" aria-label="Call An Yami">
+                                <i class="ri-phone-fill" aria-hidden="true">
                                 </i>
                             </a>
 
-                            <a href="https://maps.app.goo.gl/EqYV4c79Vm1exFtD8" class="invi_map" target="_blank">
-                                <i class='ri-map-2-line'>
+                            <a href="https://maps.app.goo.gl/EqYV4c79Vm1exFtD8" class="invi_map" target="_blank" rel="noopener" aria-label="Bến Tre venue on Google Maps">
+                                <i class="ri-map-2-line" aria-hidden="true">
                                 </i>
                             </a>
                         </div>
@@ -567,7 +576,7 @@
             <div class="timeline-list">
                 <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
                     <div class="timeline-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2020.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2020.webp" alt="Us in 2020"
                             class="timline-img lazyload">
                     </div>
 
@@ -588,7 +597,7 @@
 
                 <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
                     <div class="timeline-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2021.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2021.webp" alt="Us in 2021"
                             class="timline-img lazyload">
                     </div>
 
@@ -609,7 +618,7 @@
 
                 <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
                     <div class="timeline-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2022.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2022.webp" alt="Us in 2022"
                             class="timline-img lazyload">
                     </div>
 
@@ -630,7 +639,7 @@
 
                 <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
                     <div class="timeline-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2023.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2023.webp" alt="Us in 2023"
                             class="timline-img lazyload">
                     </div>
 
@@ -651,7 +660,7 @@
 
                 <div class="timeline-item" data-aos="fade-up" data-aos-duration="1000">
                     <div class="timeline-media">
-                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2024.webp" alt=""
+                        <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2024.webp" alt="Us in 2024"
                             class="timline-img lazyload">
                     </div>
 
@@ -690,7 +699,7 @@
             <div class="swiper-wrapper album">
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8309.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 1">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8309_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -698,7 +707,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9629.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 2">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9629_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -706,7 +715,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8577.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 3">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8577_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -714,7 +723,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8728.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 4">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8728_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -722,7 +731,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8867.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 5">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8867_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -730,7 +739,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8742.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 6">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8742_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -738,7 +747,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8979.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 7">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8979_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -746,7 +755,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8924.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 8">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8924_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -754,7 +763,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9001.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 9">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9001_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -762,7 +771,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9043.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 10">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9043_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -770,7 +779,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9255.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 11">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9255_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -778,7 +787,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9616.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 12">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9616_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -786,7 +795,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9514.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 13">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9514_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -794,7 +803,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9362.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 14">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9362_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -802,7 +811,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9554.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="pre-wedding" aria-label="Pre-wedding photo 15">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9554_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -832,7 +841,7 @@
                 <div class="video-item">
                     <video controls preload="none" class="lazyload"
                         data-poster="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/0.webp"
-                        style="width: 100%; max-width: 768px; border-radius: 12px; box-shadow: 0 0 20px rgba(0 0 0 / 10%);">
+                        width="854" height="480">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/propose.mp4"
                             type="video/mp4">
                         Your browser does not support the HTML5 Video element.
@@ -842,7 +851,7 @@
                 <div class="video-item">
                     <video controls preload="none" class="lazyload"
                         data-poster="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/2.webp"
-                        style="width: 100%; max-width: 768px; border-radius: 12px; box-shadow: 0 0 20px rgba(0 0 0 / 10%);">
+                        width="1920" height="1080">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/flycam.mp4"
                             type="video/mp4">
                         Your browser does not support the HTML5 Video element.
@@ -860,8 +869,8 @@
                 SENDING GIFTS TO THE BRIDE AND GROOM
             </h5>
 
-            <a href="#box-gift" data-fancybox="" class="btn btn-primary">
-                <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <a href="#box-gift" data-fancybox="" class="btn btn-primary" aria-label="Show the gift QR code">
+                <svg width="54" height="54" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <g fill="#fff" transform="translate(21, 6)">
                         <path d="M208 128v72a8 8 0 0 1-8 8H56a8 8 0 0 1-8-8v-72Z" opacity=".2" />
                         <path
@@ -872,7 +881,7 @@
 
             <div id="box-gift">
                 <div class="gift-qr">
-                    <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/bank.webp" alt=""
+                    <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/bank.webp" alt="Bank transfer QR code for wedding gifts"
                         class="groom_qr lazyload" style="max-width:100%">
                 </div>
             </div>
@@ -892,7 +901,7 @@
             <div class="swiper-wrapper album">
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9394.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 1">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9394_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -900,7 +909,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9736.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 2">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9736_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -908,7 +917,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9541.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 3">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9541_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -916,7 +925,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9205.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 4">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9205_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -924,7 +933,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9289.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 5">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9289_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -932,7 +941,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9067.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 6">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9067_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -940,7 +949,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8968.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 7">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8968_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -948,7 +957,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9134.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 8">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9134_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -956,7 +965,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9473.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 9">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9473_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -964,7 +973,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8659.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 10">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8659_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -972,7 +981,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8829.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 11">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/8829_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -980,7 +989,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9570.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 12">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9570_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -988,7 +997,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9716.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 13">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9716_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -996,7 +1005,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9648.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 14">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9648_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -1004,7 +1013,7 @@
 
                 <div class="swiper-slide">
                     <a href="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9704.webp"
-                        data-fancybox="gallery">
+                        data-fancybox="wedding" aria-label="Wedding photo 15">
                         <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9704_1.webp" alt=""
                             style="object-position:center;" class="lazyload">
                     </a>
@@ -1031,9 +1040,9 @@
 
             <div class="video-list">
                 <div class="video-item">
-                    <video controls preload="none" class="lazyload"
+                    <video controls preload="none" class="lazyload video-portrait"
                         data-poster="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/1.webp"
-                        style="width: 100%; max-width: 768px; border-radius: 12px; box-shadow: 0 0 20px rgba(0 0 0 / 10%);">
+                        width="480" height="854">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/card.mp4"
                             type="video/mp4">
                         Your browser does not support the HTML5 Video element.
@@ -1043,7 +1052,7 @@
 
             <div class="video-list">
                 <div class="video-item">
-                    <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/card.webp" alt=""
+                    <img data-src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/card.webp" alt="Our wedding invitation card"
                         class="lazyload">
                 </div>
             </div>
@@ -1074,32 +1083,21 @@
     <audio src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/audio/ido.mp3" controls loop id="audio">
     </audio>
 
-    <button class='toggleAudio'>
-        <i class='ri-volume-up-fill'>
+    <button class="toggleAudio" type="button" aria-label="Pause background music">
+        <i class="ri-volume-up-fill" aria-hidden="true">
         </i>
     </button>
     <!-- END AUDIO -->
 
     <script>
-        document.body.style.overflow = 'hidden';
-
         const startBtn = document.getElementById('startButton');
+        const quietStartBtn = document.getElementById('quietStartButton');
         const audio = document.getElementById('audio');
         const welcomeModal = document.getElementById('welcome-modal');
         const toggleAudioBtn = document.querySelector('.toggleAudio');
         const toggleIcon = toggleAudioBtn?.querySelector('i');
 
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-
-        if (startBtn) {
-            startBtn.addEventListener('click', () => {
-                audio?.play().catch(() => {});
-
-                if (welcomeModal) welcomeModal.style.display = 'none';
-
-                document.body.style.overflow = 'auto';
-            });
-        }
 
         // Background music vs. videos: one source of truth (audio element events)
         let userMuted = false;
@@ -1110,6 +1108,7 @@
             if (!audio) return;
             toggleIcon?.classList.toggle('ri-volume-mute-fill', audio.paused);
             toggleIcon?.classList.toggle('ri-volume-up-fill', !audio.paused);
+            toggleAudioBtn?.setAttribute('aria-label', audio.paused ? 'Play background music' : 'Pause background music');
         };
         audio?.addEventListener('play', syncAudioIcon);
         audio?.addEventListener('pause', syncAudioIcon);
@@ -1135,6 +1134,52 @@
                 if (!userMuted) audio?.play().catch(() => {});
             });
         });
+
+        // Welcome gate: once per tab session; the page behind it is inert while it is open
+        const pageRegions = [...document.body.children].filter((el) => el !== welcomeModal && el.tagName !== 'SCRIPT');
+        const ENTERED_KEY = 'wedding-entered';
+
+        const hasEntered = () => {
+            try {
+                return sessionStorage.getItem(ENTERED_KEY) === '1';
+            } catch {
+                return false;
+            }
+        };
+
+        const closeWelcome = () => {
+            if (welcomeModal) welcomeModal.style.display = 'none';
+            pageRegions.forEach((el) => (el.inert = false));
+            document.body.style.overflow = 'auto';
+            document.removeEventListener('keydown', onWelcomeKeydown);
+        };
+
+        const enterSite = (withMusic) => {
+            userMuted = !withMusic;
+            if (withMusic) audio?.play().catch(() => {});
+            closeWelcome();
+
+            try {
+                sessionStorage.setItem(ENTERED_KEY, '1');
+            } catch { }
+        };
+
+        function onWelcomeKeydown(e) {
+            if (e.key === 'Escape') enterSite(false);
+        }
+
+        if (welcomeModal && !hasEntered()) {
+            document.body.style.overflow = 'hidden';
+            pageRegions.forEach((el) => (el.inert = true));
+            document.addEventListener('keydown', onWelcomeKeydown);
+            startBtn?.addEventListener('click', () => enterSite(true));
+            quietStartBtn?.addEventListener('click', () => enterSite(false));
+            startBtn?.focus();
+        } else {
+            // back in the same tab: no gate, and music stays off until the guest turns it on
+            userMuted = true;
+            closeWelcome();
+        }
 
         document.addEventListener('lazybeforeunveil', function (e) {
             const element = e.target;

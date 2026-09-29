@@ -3,6 +3,71 @@
     backdrop-filter: blur(5px);
 }
 
+/* WELCOME */
+
+#welcome-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.is-entered #welcome-modal {
+    display: none;
+}
+
+#welcome-modal .welcome-dialog {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#welcome-modal h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman', serif;
+    color: #d6336c;
+}
+
+#welcome-modal p {
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-family: 'Georgia', serif;
+}
+
+#welcome-modal .welcome-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+#welcome-modal .welcome-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    color: white;
+    background: #d6336c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+}
+
+#welcome-modal .welcome-btn-quiet {
+    padding: 11px 24px;
+    color: #d6336c;
+    background: transparent;
+    border: 1px solid #d6336c;
+}
+
 /* AUDIO */
 
 #audio {
@@ -741,17 +806,32 @@ select {
 
 }
 
-.video-list iframe {
+/* full width up front, so the box does not jump when the poster loads */
+.video-list .video-item {
 
-    aspect-ratio: 16/9;
+    width: 100%;
+
+    text-align: center;
+
+}
+
+.video-list video {
 
     width: 100%;
 
     max-width: 768px;
 
+    height: auto;
+
     border-radius: 12px;
 
     box-shadow: 0 0 20px rgba(0 0 0 /10%);
+
+}
+
+.video-list video.video-portrait {
+
+    max-width: 480px;
 
 }
 
