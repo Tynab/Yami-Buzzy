@@ -20,6 +20,7 @@
     /* section margin and padding */
     --section-margin: 80px;
     --section-padding: 40px;
+    --section-space: 80px; /* top and bottom padding of every content section */
     --gap: 20px;
     /* effect */
     --transition: .3s;
@@ -636,14 +637,36 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    -webkit-animation: kenburns-top 10s ease-out infinite both;
-    animation: kenburns-top 10s ease-out infinite both
+    -webkit-animation: kenburns-top 10s ease-out infinite alternate both;
+    animation: kenburns-top 10s ease-out infinite alternate both
 }
 
+#banner .banner-bg {
+    position: absolute;
+    inset: 0;
+}
+
+/* card stays in normal flow so short screens grow the banner instead of clipping it */
 #banner {
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
     overflow: hidden;
     position: relative;
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+}
+
+#banner > .container {
+    width: 100%;
+    padding: 0;
+}
+
+/* keep the card's text clear of the floating music button */
+@media (max-width: 399px) {
+    #banner {
+        padding-top: 72px;
+    }
 }
 
 .overlay {
@@ -674,10 +697,8 @@ main {
 .banner-container {
     width: 90%;
     max-width: 500px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    position: relative;
+    margin: 0 auto;
     height: max-content;
     z-index: 9;
     display: flex;
@@ -767,7 +788,7 @@ main {
 
 /* ABOUT */
 #about {
-    margin-top: 80px;
+    padding: var(--section-space) 0;
     min-height: 50vh;
 }
 
@@ -828,7 +849,7 @@ main {
     justify-content: center;
     min-height: 100vh;
     color: var(--text-white);
-    padding: 120px 0;
+    padding: var(--section-space) 0;
 }
 
 .time-line-section .section-title {
@@ -914,8 +935,7 @@ main {
 
 /* COUNTDOWN */
 #countdown-section {
-    margin-top: 80px;
-    padding: 80px 0;
+    padding: var(--section-space) 0;
 }
 
 .count-down {
@@ -932,6 +952,43 @@ main {
 
 .count-down .section-title {
     color: var(--text-white);
+}
+
+/* "Together for" counter: the numbers shrink with their tile as the day count grows */
+.count-down {
+    --counter-max-fs: 2rem;
+}
+
+/* a definite width, so the tiles' size does not depend on the numbers inside them */
+#together-counter {
+    width: 100%;
+    max-width: 660px;
+}
+
+.count-down .blur-bg {
+    container-type: inline-size;
+}
+
+.count-down .uk-countdown-number {
+    font-size: 2rem;
+}
+
+@supports (width: 1cqi) {
+    .count-down .uk-countdown-number {
+        font-size: min(var(--counter-max-fs), calc(150cqi / var(--counter-chars, 2)));
+    }
+}
+
+@media (min-width: 640px) {
+    .count-down {
+        --counter-max-fs: 4rem;
+    }
+}
+
+@media (min-width: 960px) {
+    .count-down {
+        --counter-max-fs: 6rem;
+    }
 }
 
 #countdown {
@@ -980,8 +1037,9 @@ main {
 }
 
 /* ALBUM */
-#album {
-    padding: 80px 0;
+#album,
+#wedding-gallery {
+    padding: var(--section-space) 0;
 }
 
 .gallery {
@@ -1051,8 +1109,8 @@ main {
 }
 
 .invitation-card img {
-    max-width: 100%;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
     aspect-ratio: 1/1;
     object-fit: cover;
     padding: 8px;
@@ -1264,3 +1322,12 @@ main {
 
 /* Largest devices such as desktops (1280px and up) */
 @media only screen and (min-width: 1280px) {}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .banner-bg,
+    .kenburns-top,
+    .heartbeat {
+        animation: none !important;
+    }
+}

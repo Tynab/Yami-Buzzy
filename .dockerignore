@@ -1,0 +1,6 @@
+# Allowlist: only the site itself goes into the build context.
+# Everything else (.git, Jenkinsfile, tools, ReadMe, ...) stays out of the image.
+*
+!index.html
+!nginx.conf
+!wp-content
