@@ -15,8 +15,8 @@ if (window.AOS) {
     document.querySelectorAll('[data-aos]').forEach((el) => el.removeAttribute('data-aos'));
 }
 
-// SWIPER
-const albumSliders = window.Swiper && new Swiper(".album-slide", {
+// SWIPER: both albums autoplay from page load
+window.Swiper && new Swiper(".album-slide", {
     effect: "coverflow",
     grabCursor: true,
     centeredSlides: true,
@@ -34,19 +34,6 @@ const albumSliders = window.Swiper && new Swiper(".album-slide", {
         pauseOnMouseEnter: true,
     },
 });
-
-// only autoplay the albums that are on screen
-if (albumSliders && !reduceMotion && 'IntersectionObserver' in window) {
-    const albumObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const autoplay = entry.target.swiper?.autoplay;
-            if (!autoplay) return;
-            entry.isIntersecting ? autoplay.start() : autoplay.stop();
-        });
-    });
-
-    document.querySelectorAll('.album-slide').forEach((el) => albumObserver.observe(el));
-}
 
 // FANCY BOX
 window.Fancybox?.bind("[data-fancybox]", {
