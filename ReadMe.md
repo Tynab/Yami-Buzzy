@@ -16,12 +16,12 @@ It is a single static page (`index.html`) served by nginx in Docker. Photos, vid
 4. **"Together for" counter and invitation cards**: days, hours, minutes and seconds since the wedding (16.03.2025 10:00), then one card per ceremony with address, date, lunar date and map.
 5. **Dress code / schedule** for the day.
 6. **Our Love Story**: timeline from 2020 to 2024.
-7. **Album Pre-Wedding**: coverflow slider with a lightbox.
+7. **Pre-Wedding Album**: coverflow slider with a lightbox.
 8. **Our Moments**: proposal and flycam videos.
 9. **Gift**: bank transfer QR in a lightbox.
 10. **Wedding Gallery**: second coverflow slider with its own lightbox.
 11. **Wedding Invitation**: invitation video and card.
-12. **Thank you**.
+12. **Thank You**.
 13. **Background music** (`ido.mp3`) with a floating on/off button. It pauses while a video plays and stays off once a guest turns it off.
 
 ---
@@ -44,7 +44,7 @@ tools/                      qr_code.py (QR for the printed cards), cwebp-jpg.bat
 
 ## Technologies
 
-- **UIkit**: grid, countdown, scrollspy.
+- **UIkit**: grid, scrollspy (the counter reuses its countdown number/label styles).
 - **Swiper**: coverflow albums.
 - **Fancybox**: lightbox for the albums and the gift QR.
 - **AOS**: scroll animations (once, and off for visitors who prefer reduced motion).

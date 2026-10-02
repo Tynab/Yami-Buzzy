@@ -970,7 +970,13 @@ main {
 }
 
 .count-down .uk-countdown-number {
-    font-size: min(var(--counter-max-fs), calc(150cqi / var(--counter-chars, 2)));
+    font-size: 2rem;
+}
+
+@supports (width: 1cqi) {
+    .count-down .uk-countdown-number {
+        font-size: min(var(--counter-max-fs), calc(150cqi / var(--counter-chars, 2)));
+    }
 }
 
 @media (min-width: 640px) {

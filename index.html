@@ -320,8 +320,8 @@
                     </div>
                 </div>
 
-                <p class="uk-margin-remove">
-                    since our wedding day · 16.03.2025
+                <p class="uk-margin-remove uk-text-center">
+                    since our wedding day&nbsp;·&nbsp;16.03.2025
                 </p>
             </div>
 
@@ -459,7 +459,7 @@
         <div class="container">
             <div class="dresscode-time-container uk-panel">
                 <h2 class="section-title uk-text-center">
-                    Our celebration of love | 16.03.25
+                    Our Celebration of Love · 16.03.2025
                 </h2>
 
                 <div class=" uk-position-relative uk-margin-large-top"
@@ -1173,8 +1173,13 @@
                 togetherCounter.style.setProperty('--counter-chars', Math.max(2, days.length));
             };
 
-            renderTogether();
-            setInterval(renderTogether, 1000);
+            // re-arm just after each second boundary, so a late tick cannot skip or repeat a second
+            const tick = () => {
+                renderTogether();
+                setTimeout(tick, 1020 - ((Date.now() - since) % 1000));
+            };
+
+            tick();
         }
 
         // Welcome gate: once per tab session; the page behind it is inert while it is open
