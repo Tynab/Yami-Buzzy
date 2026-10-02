@@ -679,7 +679,7 @@ select {
 
 .section-gift {
 
-    padding: 80px 0;
+    padding: var(--section-space) 0;
 
     background-image: linear-gradient(to top,
 
@@ -767,7 +767,7 @@ select {
 #video,
 #wedding-invitation {
 
-    padding: 80px 0;
+    padding: var(--section-space) 0;
 
     background: var(--bg)
 }
@@ -806,6 +806,12 @@ select {
 
 }
 
+.video-list + .video-list {
+
+    margin-top: 40px;
+
+}
+
 /* full width up front, so the box does not jump when the poster loads */
 .video-list .video-item {
 
@@ -837,7 +843,7 @@ select {
 
 /* DRESS CODE */
 .dresscode {
-    padding: 120px 0;
+    padding: var(--section-space) 0;
     background-color: var(--primary-color);
     box-shadow: inset 9999px 9999px rgba(0, 0, 0, 0.519);
     color: wheat;

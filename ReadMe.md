@@ -13,7 +13,7 @@ It is a single static page (`index.html`) served by nginx in Docker. Photos, vid
 1. **Welcome gate**: *Start* (with music) or *Enter without music*. It is shown once per browser tab.
 2. **Hero**: names, date and venue, with call / gift / map links.
 3. **About us**: the bride and the groom.
-4. **Countdown and invitation cards**: one card per ceremony, with address, date, lunar date and map.
+4. **"Together for" counter and invitation cards**: days, hours, minutes and seconds since the wedding (16.03.2025 10:00), then one card per ceremony with address, date, lunar date and map.
 5. **Dress code / schedule** for the day.
 6. **Our Love Story**: timeline from 2020 to 2024.
 7. **Album Pre-Wedding**: coverflow slider with a lightbox.

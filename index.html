@@ -86,7 +86,7 @@
                 Welcome to Our Wedding!
             </h2>
             <p>
-                Thanks for celebrating this special day with us. Click 'Start' to begin the journey.
+                Thank you for being part of our special day. Come and relive the journey with us.
             </p>
             <div class="welcome-actions">
                 <button id="startButton" type="button" class="welcome-btn">
@@ -109,7 +109,7 @@
                 <div class="banner-container">
                     <div class="banner-title">
                         <p>
-                            We are getting married!
+                            We got married!
                         </p>
                     </div>
 
@@ -259,7 +259,7 @@
                 data-bg="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/image/9267.webp"
                 style="background-image: none;">
                 <p class="subtitle">
-                    We are starting the countdown
+                    Together for
                 </p>
 
                 <svg class="heartbeat" width="64" height="64" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -269,12 +269,12 @@
                         d="M8.106 18.247C5.298 16.083 2 13.542 2 9.137C2 4.274 7.5.825 12 5.501C16.5.825 22 4.274 22 9.137c0 .834-.118 1.6-.329 2.31a4.203 4.203 0 0 0-2.619-.947c-.89-.005-1.758.274-2.553.81c-1.39-.933-2.956-1.058-4.33-.395c-1.635.79-2.669 2.556-2.669 4.484c0 2.306 1.149 3.923 2.342 5.095c-.948-.076-1.897-.808-2.88-1.583c-.277-.219-.564-.44-.856-.664Z" />
                 </svg>
 
-                <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-4@s uk-margin uk-flex-center" uk-grid
-                    uk-countdown="date: 2025-03-16T10:00:00+07:00">
+                <div id="together-counter" class="uk-grid-small uk-child-width-1-2 uk-child-width-1-4@s uk-margin uk-flex-center"
+                    uk-grid data-since="2025-03-16T10:00:00+07:00">
                     <div>
                         <div
                             class="uk-padding-small blur-bg uk-flex uk-flex-center uk-flex-middle uk-border-rounded uk-flex-column text-white">
-                            <div class="uk-countdown-number uk-countdown-days">
+                            <div class="uk-countdown-number" data-unit="days">
                             </div>
 
                             <div class="uk-countdown-label uk-margin-small uk-text-center">
@@ -286,11 +286,11 @@
                     <div>
                         <div
                             class="uk-padding-small blur-bg uk-flex uk-flex-center uk-flex-middle uk-border-rounded uk-flex-column text-white">
-                            <div class="uk-countdown-number uk-countdown-hours">
+                            <div class="uk-countdown-number" data-unit="hours">
                             </div>
 
                             <div class="uk-countdown-label uk-margin-small uk-text-center">
-                                Hour
+                                Hours
                             </div>
                         </div>
                     </div>
@@ -298,7 +298,7 @@
                     <div>
                         <div
                             class="uk-padding-small blur-bg uk-flex uk-flex-center uk-flex-middle uk-border-rounded uk-flex-column text-white">
-                            <div class="uk-countdown-number uk-countdown-minutes">
+                            <div class="uk-countdown-number" data-unit="minutes">
                             </div>
 
                             <div class="uk-countdown-label uk-margin-small uk-text-center">
@@ -310,7 +310,7 @@
                     <div>
                         <div
                             class="uk-padding-small blur-bg uk-flex uk-flex-center uk-flex-middle uk-border-rounded uk-flex-column text-white">
-                            <div class="uk-countdown-number uk-countdown-seconds">
+                            <div class="uk-countdown-number" data-unit="seconds">
                             </div>
 
                             <div class="uk-countdown-label uk-margin-small uk-text-center">
@@ -319,6 +319,10 @@
                         </div>
                     </div>
                 </div>
+
+                <p class="uk-margin-remove">
+                    since our wedding day · 16.03.2025
+                </p>
             </div>
 
             <div class="invitation">
@@ -328,7 +332,7 @@
                             class="lazyload">
 
                         <h3 class="card-title uk-margin-remove">
-                            At Home
+                            Bride's Family
                         </h3>
 
                         <address class="uk-margin-remove" lang="vi">
@@ -365,7 +369,7 @@
                                     </span>
                                 </div>
 
-                                <p class="invi_amlich">30-01-2025 (Lunar Calendar)</p>
+                                <p class="invi_amlich">30-01-2025 (lunar calendar)</p>
                             </div>
                         </div>
 
@@ -391,7 +395,7 @@
                             class="lazyload">
 
                         <h3 class="card-title uk-margin-remove">
-                            At Home
+                            Groom's Family
                         </h3>
 
                         <address class="uk-margin-remove" lang="vi">
@@ -428,7 +432,7 @@
                                     </span>
                                 </div>
 
-                                <p class="invi_amlich">17-02-2025 (Lunar Calendar)</p>
+                                <p class="invi_amlich">17-02-2025 (lunar calendar)</p>
                             </div>
                         </div>
 
@@ -453,9 +457,9 @@
     <!-- DRESS CODE -->
     <section class="dresscode" id="dresscode">
         <div class="container">
-            <div class="dresscode-time-container uk-panel uk-section">
+            <div class="dresscode-time-container uk-panel">
                 <h2 class="section-title uk-text-center">
-                    Join our celebration of love | 16.03.25
+                    Our celebration of love | 16.03.25
                 </h2>
 
                 <div class=" uk-position-relative uk-margin-large-top"
@@ -484,7 +488,7 @@
                                         </h2>
 
                                         <h3 class="dress-title uk-text-default uk-margin-remove">
-                                            Warm welcome
+                                            Warm Welcome
                                         </h3>
                                     </div>
                                 </div>
@@ -511,7 +515,7 @@
                                         </h2>
 
                                         <h3 class="dress-title uk-text-default uk-margin-remove">
-                                            Save the moments
+                                            Capture the Moments
                                         </h3>
                                     </div>
                                 </div>
@@ -565,7 +569,7 @@
                                         </h2>
 
                                         <h3 class="dress-title uk-text-default uk-margin-remove">
-                                            Party and dance
+                                            Party &amp; Dancing
                                         </h3>
                                     </div>
                                 </div>
@@ -605,7 +609,7 @@
                         </span>
 
                         <p class="timeline-des uk-margin-remove">
-                            Met through a shared best friend.
+                            We met through a mutual best friend.
                         </p>
                     </div>
                 </div>
@@ -626,7 +630,7 @@
                         </span>
 
                         <p class="timeline-des uk-margin-remove">
-                            Special memories, grew closer.
+                            We made special memories and grew closer.
                         </p>
                     </div>
                 </div>
@@ -647,7 +651,7 @@
                         </span>
 
                         <p class="timeline-des uk-margin-remove">
-                            Saw each other less after job changes.
+                            We saw each other less after changing jobs.
                         </p>
                     </div>
                 </div>
@@ -668,7 +672,7 @@
                         </span>
 
                         <p class="timeline-des uk-margin-remove">
-                            Introduced families, strengthened bond.
+                            We introduced our families, and our bond grew stronger.
                         </p>
                     </div>
                 </div>
@@ -689,7 +693,7 @@
                         </span>
 
                         <p class="timeline-des uk-margin-remove">
-                            Sealed commitment with a proposal.
+                            We sealed our commitment with a proposal.
                         </p>
                     </div>
                 </div>
@@ -706,7 +710,7 @@
             </p>
 
             <h2 class="section-title">
-                Album Pre-Wedding
+                Pre-Wedding Album
             </h2>
         </div>
 
@@ -859,7 +863,7 @@
                         width="854" height="480">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/propose.mp4"
                             type="video/mp4">
-                        Your browser does not support the HTML5 Video element.
+                        Your browser does not support HTML5 video.
                     </video>
                 </div>
 
@@ -869,7 +873,7 @@
                         width="1920" height="1080">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/flycam.mp4"
                             type="video/mp4">
-                        Your browser does not support the HTML5 Video element.
+                        Your browser does not support HTML5 video.
                     </video>
                 </div>
             </div>
@@ -881,7 +885,7 @@
     <section id="gift" class="section-gift" style="display:block">
         <div class="container">
             <h5 class="uk-text-center script-font uk-text-cappercase">
-                SENDING GIFTS TO THE BRIDE AND GROOM
+                GIFTS FOR THE BRIDE AND GROOM
             </h5>
 
             <a href="#box-gift" data-fancybox="" class="btn btn-primary" aria-label="Show the gift QR code">
@@ -1060,7 +1064,7 @@
                         width="480" height="854">
                         <source src="https://s3.ap-southeast-1.amazonaws.com/tynab.wedding/video/card.mp4"
                             type="video/mp4">
-                        Your browser does not support the HTML5 Video element.
+                        Your browser does not support HTML5 video.
                     </video>
                 </div>
             </div>
@@ -1084,7 +1088,7 @@
 
         <div class="thankyou-body container uk-position-relative uk-position-z-index">
             <h2 class="banner-title  script-font uk-heading-medium uk-text-center text-white" data-aos="fade-up">
-                Thank you
+                Thank You
             </h2>
 
             <p class="thankyou-des" data-aos="fade">
@@ -1149,6 +1153,29 @@
                 if (!userMuted) audio?.play().catch(() => {});
             });
         });
+
+        // "Together for" counter, counting up from the wedding ceremony
+        const togetherCounter = document.getElementById('together-counter');
+
+        if (togetherCounter) {
+            const since = Date.parse(togetherCounter.dataset.since);
+            const units = Object.fromEntries([...togetherCounter.querySelectorAll('[data-unit]')].map((el) => [el.dataset.unit, el]));
+            const pad = (n) => String(n).padStart(2, '0');
+
+            const renderTogether = () => {
+                const total = Math.max(0, Math.floor((Date.now() - since) / 1000));
+                const days = String(Math.floor(total / 86400));
+
+                units.days.textContent = days;
+                units.hours.textContent = pad(Math.floor(total / 3600) % 24);
+                units.minutes.textContent = pad(Math.floor(total / 60) % 60);
+                units.seconds.textContent = pad(total % 60);
+                togetherCounter.style.setProperty('--counter-chars', Math.max(2, days.length));
+            };
+
+            renderTogether();
+            setInterval(renderTogether, 1000);
+        }
 
         // Welcome gate: once per tab session; the page behind it is inert while it is open
         const pageRegions = [...document.body.children].filter((el) => el !== welcomeModal && el.tagName !== 'SCRIPT');
